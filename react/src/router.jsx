@@ -3,7 +3,6 @@ import Home from './pages/index';
 import SignIn from './pages/sign-in';
 import User from './pages/user';
 import ErrorPage from "./pages/error-page";
-import UpdateProfil from "./pages/updateProfil";
 
 export const router = createBrowserRouter([
   {
@@ -19,11 +18,6 @@ export const router = createBrowserRouter([
   {
     path: "/user",
     element: <User />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/user/update",
-    element: <UpdateProfil />,
     errorElement: <ErrorPage />,
   },
   {

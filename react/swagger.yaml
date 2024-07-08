@@ -9,7 +9,7 @@ basePath: /api/v1
 schemes:
   - http
 paths:
-  /user/accounts/{accountId}/transactions:
+  /{userId}/transactions:
     get:
       security:
         - Bearer: []
@@ -24,7 +24,7 @@ paths:
           required: true
           type: string
         - in: path
-          name: accountId
+          name: userId
           type: string
           required: true
       produces:
@@ -38,7 +38,7 @@ paths:
           description: Invalid id
         "500":
           description: Internal Server Error
-  /user/accounts/{accountId}/transactions/{transactionId}:
+  /transaction/{transactionId}:
     get:
       security:
         - Bearer: []
@@ -52,10 +52,6 @@ paths:
           description: Attach Bearer JWT token
           required: true
           type: string
-        - in: path
-          name: accountId
-          type: string
-          required: true
         - in: path
           name: transactionId
           type: string
@@ -71,7 +67,7 @@ paths:
           description: Invalid id
         "500":
           description: Internal Server Error
-    put:
+    patch:
       security:
         - Bearer: []
       tags:
@@ -90,10 +86,6 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/Transaction"
-        - in: path
-          name: accountId
-          type: string
-          required: true
         - in: path
           name: transactionId
           type: string
@@ -120,14 +112,26 @@ definitions:
     items:
       type: object
       properties:
-        description:
+        accountId:
           type: string
-        amount:
-          type: number
+        name:
+          type: string
+        transactions:
+          type: array
+          items:
+            $ref: '#/definitions/Transaction'
   Transaction:
     type: object
     properties:
-      description:
+      Date:
         type: string
-      amount:
+      Description:
+        type: string
+      Amount:
         type: number
+      Balance:
+        type: string
+      Category:
+        type: string
+      Notes:
+        type: string

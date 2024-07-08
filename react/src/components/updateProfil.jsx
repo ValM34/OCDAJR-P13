@@ -1,16 +1,12 @@
-import Header from "../layouts/header";
-import Footer from "../layouts/footer";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { userSlice } from "../redux/userSlice.js";
 import { getUser } from "../redux/selectors.js";
 
-function UpdateProfil() {
+function UpdateProfil({ toggleEditNameForm }) {
   const user = useSelector(getUser);
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleForm = (e) => {
@@ -34,46 +30,56 @@ function UpdateProfil() {
             lastName: lastNameRef.current.value,
           })
         );
-        navigate("/user");
+        toggleEditNameForm();
       });
   };
 
   return (
-    <>
-      <Header />
-      <h1>Modifier le profil</h1>
-      <section className="update-profile-content">
-        <form>
-          <div className="input-wrapper">
-            <label htmlFor="firstName">Prénom</label>
-            <input
-              ref={firstNameRef}
-              type="text"
-              name="firstName"
-              defaultValue={user && user.firstName}
-            />
-          </div>
-          <div className="input-wrapper">
-            <label htmlFor="lastName">Nom</label>
-            <input
-              ref={lastNameRef}
-              type="text"
-              name="lastName"
-              defaultValue={user && user.lastName}
-            />
-          </div>
+    <section>
+      <h1 style={{ fontSize: "2em" }}>
+        Welcome back
+        <br />
+      </h1>
+      <form>
+        <div className="update-profile-inputs-container">
+          <input
+            className="update-profile-input"
+            ref={firstNameRef}
+            type="text"
+            name="firstName"
+            defaultValue={user && user.firstName}
+          />
+          <input
+            className="update-profile-input"
+            ref={lastNameRef}
+            type="text"
+            name="lastName"
+            defaultValue={user && user.lastName}
+          />
+        </div>
+        <div className="update-profile-buttons-container">
           <button
+            className="update-profile-validation-button"
             onClick={handleForm}
             type="submit"
-            className="update-profile-button"
           >
-            Modifier
+            Save
           </button>
-        </form>
-      </section>
-      <Footer />
-    </>
+          <button
+            className="update-profile-validation-button"
+            onClick={toggleEditNameForm}
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </section>
   );
 }
+
+UpdateProfil.propTypes = {
+  toggleEditNameForm: () => {},
+};
 
 export default UpdateProfil;

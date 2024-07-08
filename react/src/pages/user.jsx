@@ -1,8 +1,9 @@
 import Footer from "../layouts/footer";
 import Header from "../layouts/header";
+import UpdateProfile from "../components/updateProfil";
 import { useSelector, useDispatch } from "react-redux";
 import { userSlice } from "../redux/userSlice.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../redux/selectors.js";
 
@@ -10,9 +11,10 @@ function User() {
   const user = useSelector(getUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [displayEditNameForm, setDisplayEditNameForm] = useState(false);
 
-  const navigateToUpdateProfil = () => {
-    navigate('/user/update');
+  const toggleEditNameForm = () => {
+    setDisplayEditNameForm(!displayEditNameForm);
   }
 
   useEffect(() => {
@@ -41,12 +43,18 @@ function User() {
       <Header />
       <main className="main bg-dark">
         <div className="header">
-          <h1>
-            Welcome back
-            <br />
-            {user && user.firstName && user.lastName ? user.firstName + " " + user.lastName : ""}!
-          </h1>
-          <button onClick={navigateToUpdateProfil} className="edit-button">Edit Name</button>
+          {
+            displayEditNameForm ? 
+            <UpdateProfile toggleEditNameForm={toggleEditNameForm} /> :
+            <>
+              <h1>
+                Welcome back
+                <br />
+                {user && user.firstName && user.lastName ? user.firstName + " " + user.lastName : ""}!
+              </h1>
+              <button onClick={toggleEditNameForm} className="edit-button">Edit Name</button>
+            </>
+          }
         </div>
         <h2 className="sr-only">Accounts</h2>
         <section className="account">

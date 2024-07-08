@@ -310,3 +310,52 @@ body {
   background-color: #00bc77;
   color: #fff;
 }
+
+.update-profile-inputs-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.update-profile-input {
+  height: 35px;
+  border-radius: 3px;
+  width: 200px;
+  border: 2px solid #bbbbbb;
+  padding-left: 10px;
+}
+
+.update-profile-input:nth-child(1) {
+  margin-right: 10px;
+}
+
+.update-profile-input:nth-child(2) {
+  margin-left: 10px;
+}
+
+.update-profile-buttons-container {
+  display: flex;
+  justify-content: center;
+}
+
+.update-profile-validation-button {
+  width: 100px;
+  border: 2px solid #00bc77;
+  height: 30px;
+  border-radius: 3px;
+  font-weight: bold;
+  color: #00bc77;
+  background-color: white;
+}
+
+.update-profile-validation-button:nth-child(1) {
+  margin-right: 10px;
+}
+
+.update-profile-validation-button:nth-child(2) {
+  margin-left: 10px;
+}
+
+.error-msg {
+  color: red;
+}

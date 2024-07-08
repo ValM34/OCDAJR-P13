@@ -1,7 +1,7 @@
 import Header from "../layouts/header";
 import Footer from "../layouts/footer";
-import { useRef } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import { useRef, useState } from 'react';
+import { useDispatch } from "react-redux";
 import { userSlice } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -9,11 +9,14 @@ function SignIn() {
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const [displayUserErrorMsg, setDisplayUserErrorMsg] = useState(false);
+  const [displayServerErrorMsg, setDisplayServerErrorMsg] = useState(false);
 
   const signIn = (e) => {
     e.preventDefault();
+    setDisplayUserErrorMsg(false);
+    setDisplayServerErrorMsg(false);
     fetch("http://localhost:3001/api/v1/user/login", {
       method: "POST",
       headers: {
@@ -26,15 +29,15 @@ function SignIn() {
     })
       .then((response) => response.json())
       .then((data) => {
-        // // Save token in local storage
-        // localStorage.removeItem("token");
-        // localStorage.setItem("token", data.body.token);
-        dispatch(userSlice.actions.login(data.body.token));
-        navigate("/user");
-      });
+        if(data.status === 200) {
+          dispatch(userSlice.actions.login(data.body.token));
+          navigate("/user");
+        } else if(data.status === 400) {
+          setDisplayUserErrorMsg(true);
+        }
+      })
+      .catch(() => setDisplayServerErrorMsg(true))
   }
-
-  console.log(user)
 
   return (
     <>
@@ -57,6 +60,8 @@ function SignIn() {
               <label htmlFor="remember-me">Remember me</label>
             </div>
             <button onClick={signIn} className="sign-in-button">Sign In</button>
+            {displayUserErrorMsg && <p className="error-msg">Nom de compte ou mot de passe invalide</p>}
+            {displayServerErrorMsg && <p className="error-msg">Une erreur interne au serveur est survenue</p>}
           </form>
         </section>
       </main>
